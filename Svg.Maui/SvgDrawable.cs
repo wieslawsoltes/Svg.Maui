@@ -14,7 +14,9 @@ public class SvgDrawable : IDrawable
 
 	public SvgDrawable()
     {
-        LoadSvg("MauiApp1.Resources.__tiger.svg");
+        //LoadSvg("MauiApp1.Resources.Svg.__AJ_Digital_Camera.svg");
+        LoadSvg("MauiApp1.Resources.Svg.__tiger.svg");
+        //LoadSvg("MauiApp1.Resources.Svg.SVG_logo.svg");
     }
 
     public SKPicture? LoadPicture(string name)

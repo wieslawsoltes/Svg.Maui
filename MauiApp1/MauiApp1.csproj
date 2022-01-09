@@ -56,7 +56,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <EmbeddedResource Include="Resources\__tiger.svg" />
+	  <EmbeddedResource Include="Resources\Svg\*.svg" />
 	</ItemGroup>
 
 	<!--<ItemGroup>
