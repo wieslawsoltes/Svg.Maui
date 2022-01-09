@@ -1,0 +1,14 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:s="clr-namespace:Svg.Maui"
+             x:Class="MauiApp1.MainPage"
+             BackgroundColor="{DynamicResource SecondaryColor}">
+	<ContentPage.Resources>
+      <s:SvgDrawable x:Key="SvgDrawable" />
+	</ContentPage.Resources>
+	<VerticalStackLayout>
+		<GraphicsView Drawable="{StaticResource SvgDrawable}"
+                      HeightRequest="510"
+                      WidthRequest="494"/>
+	</VerticalStackLayout>
+</ContentPage>
