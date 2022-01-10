@@ -3,6 +3,7 @@
              x:Class="MauiApp1.MainPage"
              BackgroundColor="{DynamicResource SecondaryColor}">
   <VerticalStackLayout>
+    <Button Text="Open..." Clicked="ButtonOpen_Clicked" />
     <GraphicsView x:Name="graphicsView" />
   </VerticalStackLayout>
 </ContentPage>
