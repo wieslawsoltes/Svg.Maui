@@ -1,4 +1,7 @@
-﻿using Microsoft.Maui.Controls;
+﻿#nullable enable
+using System.Reflection;
+using Microsoft.Maui.Controls;
+using Svg.Maui;
 
 namespace MauiApp1;
 
@@ -18,7 +21,7 @@ public partial class MainPage : ContentPage
         _drawable = SvgDrawable.CreateFromResource(name, assembly);
         if (_drawable is { })
         {
-            graphicsView.Drwable = _drawable;
+            graphicsView.Drawable = _drawable;
             graphicsView.WidthRequest = _drawable.Picture.Width;
             graphicsView.HeightRequest = _drawable.Picture.Height;
         }
