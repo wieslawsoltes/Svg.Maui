@@ -1,4 +1,5 @@
 ﻿#nullable enable
+using System.IO;
 using Microsoft.Maui.Graphics;
 using ShimSkiaSharp;
 using Svg.Model;
@@ -12,55 +13,66 @@ public class SvgDrawable : IDrawable
 
 	private IPicture? _picture;
 
-	public SvgDrawable()
+    public IPicture? Picture => _picture;
+
+	private SvgDrawable()
     {
-        //LoadSvg("MauiApp1.Resources.Svg.__AJ_Digital_Camera.svg");
-        LoadSvg("MauiApp1.Resources.Svg.__tiger.svg");
-        //LoadSvg("MauiApp1.Resources.Svg.SVG_logo.svg");
     }
 
-    public SKPicture? LoadPicture(string name)
-	{
-		var assembly = GetType().GetTypeInfo().Assembly;
-
-		using (var stream = assembly.GetManifestResourceStream(name))
-		{
-			if (stream == null)
-            {
-				return null;
-            }	
-
-			var document = SvgExtensions.Open(stream);
-			if (document is { })
-			{
-				return SvgExtensions.ToModel(document, s_assetLoader, out _, out _);
-			}
-		}
-
-		return null;
-	}
-
-    private void LoadSvg(string name)
+    public static SvgDrawable? CreateFromResource(string name, Assembly assembly)
     {
-        var picture = LoadPicture(name);
-        if (picture is { })
+        using var stream = assembly.GetManifestResourceStream(name);
+        return CreateFromStream(stream);
+    }
+
+    public static SvgDrawable? CreateFromStream(Stream? stream)
+    {
+        var skPicture = ToLoadModelFromStream(stream);
+        if (skPicture is { })
         {
-            if (picture.Commands is not null)
+            var picture = LoadSvg(skPicture);
+            if (picture is { })
             {
-                using var canvas = new PictureCanvas(
-                    picture.CullRect.Left,
-                    picture.CullRect.Top,
-                    picture.CullRect.Width,
-                    picture.CullRect.Height);
-
-                foreach (var canvasCommand in picture.Commands)
-                {
-                    Draw(canvasCommand, canvas);
-                }
-
-                _picture = canvas.Picture;
+                var drawable = new SvgDrawable { _picture = picture };
+                return drawable;
             }
         }
+
+        return null;
+    }
+
+    private static SKPicture? ToLoadModelFromStream(Stream? stream)
+    {
+        if (stream == null)
+        {
+            return null;
+        }
+
+        var document = SvgExtensions.Open(stream);
+        return document is { } 
+            ? SvgExtensions.ToModel(document, s_assetLoader, out _, out _) 
+            : null;
+    }
+
+    private static IPicture? LoadSvg(SKPicture picture)
+    {
+        if (picture.Commands is null)
+        {
+            return null;
+        }
+
+        using var canvas = new PictureCanvas(
+            picture.CullRect.Left,
+            picture.CullRect.Top,
+            picture.CullRect.Width,
+            picture.CullRect.Height);
+
+        foreach (var canvasCommand in picture.Commands)
+        {
+            Draw(canvasCommand, canvas);
+        }
+
+        return canvas.Picture;
     }
 
     private static bool IsStroked(SKPaint paint)
@@ -73,7 +85,7 @@ public class SvgDrawable : IDrawable
         return paint.Style == SKPaintStyle.Fill || paint.Style == SKPaintStyle.StrokeAndFill;
     }
 
-    private void Draw(CanvasCommand canvasCommand, ICanvas canvas)
+    private static void Draw(CanvasCommand canvasCommand, ICanvas canvas)
     {
         switch (canvasCommand)
         {
