@@ -14,6 +14,11 @@ if (drawable?.Picture is null)
 }
 
 using var bmp = SkiaGraphicsService.Instance.CreateBitmapExportContext((int)drawable.Picture.Width, (int)drawable.Picture.Height);
+if (bmp is null)
+{
+    return;
+}
+
 var dirtyRect = new RectangleF(0, 0, drawable.Picture.Width, drawable.Picture.Height);
 
 drawable.Draw(bmp.Canvas, dirtyRect);
