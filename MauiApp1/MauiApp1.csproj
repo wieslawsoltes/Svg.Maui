@@ -9,6 +9,8 @@
 		<SingleProject>true</SingleProject>
 		<ImplicitUsings>disable</ImplicitUsings>
 		<EnablePreviewMsixTooling>true</EnablePreviewMsixTooling>
+
+        <NoWarn>$(NoWarn);NU1703</NoWarn>
     
 		<!-- Display name -->
 		<ApplicationTitle>MauiApp1</ApplicationTitle>
