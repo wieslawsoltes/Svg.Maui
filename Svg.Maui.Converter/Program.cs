@@ -81,6 +81,6 @@ class LoggingService : ILoggingService
 
     void ILoggingService.Log(LogType logType, string message, Exception exception)
     {
-        Console.WriteLine(message, exception);
+        Console.WriteLine(message);
     }
 }
