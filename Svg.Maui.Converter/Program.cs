@@ -7,6 +7,7 @@ using Svg.Maui;
 var name = "paths-data-01-t";
 //var path = @$"..\..\..\..\..\Svg.Skia\externals\SVG\Tests\W3CTestSuite\svg\{name}.svg";
 var path = @$"..\..\Svg.Skia\externals\SVG\Tests\W3CTestSuite\svg\{name}.svg";
+
 var stream = File.OpenRead(path);
 var drawable = SvgDrawable.CreateFromStream(stream);
 if (drawable?.Picture is null)
@@ -14,15 +15,18 @@ if (drawable?.Picture is null)
     return;
 }
 
-using var bmp = SkiaGraphicsService.Instance.CreateBitmapExportContext((int)drawable.Picture.Width, (int)drawable.Picture.Height);
+GraphicsPlatform.RegisterGlobalService(SkiaGraphicsService.Instance);
+Fonts.Register(new SkiaFontService("", ""));
+
+var width = drawable.Picture.Width;
+var height = drawable.Picture.Height;
+using var bmp = GraphicsPlatform.CurrentService.CreateBitmapExportContext((int)width, (int)height);
 if (bmp is null)
 {
     return;
 }
 
-Fonts.Register(new SkiaFontService("", ""));
-
-var dirtyRect = new RectangleF(0, 0, drawable.Picture.Width, drawable.Picture.Height);
+var dirtyRect = new RectangleF(0, 0, width, height);
 
 drawable.Draw(bmp.Canvas, dirtyRect);
 
