@@ -250,7 +250,7 @@ public static class MauiModelExtensions
     }
     */
 
-    private static SolidPaint ToSolidColorBrush(this ColorShader colorShader)
+    private static SolidPaint ToPaint(this ColorShader colorShader)
     {
         var color = colorShader.Color.ToColor();
         return new SolidPaint(color);
@@ -276,7 +276,7 @@ public static class MauiModelExtensions
     */
 
     // TODO: LinearGradientShader
-    public static GradientPaint? ToLinearGradientBrush(this LinearGradientShader linearGradientShader)
+    public static Paint? ToPaint(this LinearGradientShader linearGradientShader)
     {
         if (linearGradientShader.Colors is null || linearGradientShader.ColorPos is null)
         {
@@ -313,7 +313,7 @@ public static class MauiModelExtensions
     }
 
     // TODO: RadialGradientShader
-    public static GradientPaint? ToRadialGradientBrush(this RadialGradientShader radialGradientShader)
+    public static Paint? ToPaint(this RadialGradientShader radialGradientShader)
     {
         if (radialGradientShader.Colors is null || radialGradientShader.ColorPos is null)
         {
@@ -350,7 +350,7 @@ public static class MauiModelExtensions
     }
 
     // TODO: TwoPointConicalGradientShader
-    public static GradientPaint? ToRadialGradientBrush(this TwoPointConicalGradientShader twoPointConicalGradientShader)
+    public static Paint? ToPaint(this TwoPointConicalGradientShader twoPointConicalGradientShader)
     {
         if (twoPointConicalGradientShader.Colors is null || twoPointConicalGradientShader.ColorPos is null)
         {
@@ -395,64 +395,41 @@ public static class MauiModelExtensions
         return radialGradientPaint;
     }
 
-    // TODO: Shader
-    /*
-    public static AM.IBrush? ToBrush(this SKShader? shader)
+    public static Paint? ToPaint(this PictureShader pictureShader)
+    {
+        var picture = pictureShader.Src?.Record(pictureShader.Tile);
+        var pattern = new PicturePattern(picture);
+        var paint = new PatternPaint
+        {
+            Pattern = pattern
+        };
+
+        return paint;
+    }
+
+    public static Paint? ToPaint(this SKShader? shader)
     {
         switch (shader)
         {
             case ColorShader colorShader:
-                return ToSolidColorBrush(colorShader);
+                return ToPaint(colorShader);
 
             case LinearGradientShader linearGradientShader:
-                return ToLinearGradientBrush(linearGradientShader);
+                return ToPaint(linearGradientShader);
 
             case RadialGradientShader radialGradientShader:
-                return ToRadialGradientBrush(radialGradientShader);
+                return ToPaint(radialGradientShader);
 
             case TwoPointConicalGradientShader twoPointConicalGradientShader:
-                return ToRadialGradientBrush(twoPointConicalGradientShader);
+                return ToPaint(twoPointConicalGradientShader);
 
             case PictureShader pictureShader:
-                // TODO: pictureShader
-                return null;
+                return ToPaint(pictureShader);
 
             default:
                 return null;
         }
     }
-    */
-
-    // TODO: 
-    /*
-    private static AM.IPen ToPen(this SKPaint paint)
-    {
-        var brush = ToBrush(paint.Shader);
-        var lineCap = paint.StrokeCap.ToPenLineCap();
-        var lineJoin = paint.StrokeJoin.ToPenLineJoin();
-
-        var dashStyle = default(AMII.ImmutableDashStyle);
-        if (paint.PathEffect is DashPathEffect dashPathEffect && dashPathEffect.Intervals is { })
-        {
-            var dashes = new List<double>();
-            foreach (var interval in dashPathEffect.Intervals)
-            {
-                dashes.Add(interval / paint.StrokeWidth);
-            }
-            var offset = dashPathEffect.Phase / paint.StrokeWidth;
-            dashStyle = new AMII.ImmutableDashStyle(dashes, offset);
-        }
-
-        return new AMII.ImmutablePen(
-            brush,
-            paint.StrokeWidth,
-            dashStyle,
-            lineCap,
-            lineJoin,
-            paint.StrokeMiter
-        );
-    }
-    */
 
     // TODO:
     public static void SetFill(this SKShader? shader, ICanvas canvas)
@@ -464,18 +441,18 @@ public static class MauiModelExtensions
                     var color = colorShader.Color.ToColor();
                     canvas.FillColor = color;
                 }
-                break; 
+                break;
 
             case LinearGradientShader linearGradientShader:
                 {
-                    var paint = linearGradientShader.ToLinearGradientBrush();
+                    var paint = linearGradientShader.ToPaint();
                     canvas.SetFillPaint(paint, RectangleF.Zero);
                 }
                 break;
 
             case RadialGradientShader radialGradientShader:
                 {
-                    var paint = radialGradientShader.ToRadialGradientBrush();
+                    var paint = radialGradientShader.ToPaint();
                     canvas.SetFillPaint(paint, RectangleF.Zero);
                 }
                 break;
@@ -488,13 +465,7 @@ public static class MauiModelExtensions
 
             case PictureShader pictureShader:
                 {
-                    var picture = pictureShader.Src?.Record(pictureShader.Tile);
-                    var pattern = new PicturePattern(picture);
-                    var paint = new PatternPaint
-                    {
-                        Pattern = pattern
-                    };
-
+                    var paint = pictureShader.ToPaint();
                     canvas.SetFillPaint(paint, RectangleF.Zero);
                 }
                 break;
