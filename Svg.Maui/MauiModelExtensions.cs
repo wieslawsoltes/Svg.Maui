@@ -545,6 +545,58 @@ public static class MauiModelExtensions
         canvas.MiterLimit = paint.StrokeMiter;
     }
 
+    // TODO:
+    public static void SetFont(this SKPaint paint, ICanvas canvas)
+    {
+        switch (paint.Shader)
+        {
+            case ColorShader colorShader:
+                var color = colorShader.Color.ToColor();
+                canvas.FontColor = color;
+                break;
+
+            case LinearGradientShader linearGradientShader:
+                // TODO:
+                break;
+
+            case RadialGradientShader radialGradientShader:
+                // TODO:
+                break;
+
+            case TwoPointConicalGradientShader twoPointConicalGradientShader:
+                // TODO:
+                break;
+
+            case PictureShader pictureShader:
+                // TODO:
+                break;
+
+            default:
+                // TODO:
+
+                break;
+        }
+
+        var fontSize = paint.TextSize;
+        canvas.FontSize = fontSize;
+
+        if (paint.Typeface is { } typeface)
+        {
+            // TODO: var weight = typeface.FontWeight.ToFontWeight();
+
+            // TODO: typeface.FontWidth
+
+            // TODO: var slant = typeface.Style.ToFontStyle();
+
+            var familyName = typeface.FamilyName;
+            canvas.FontName = familyName;
+        }
+        else
+        {
+            canvas.SetToSystemFont();
+        }
+    }
+
     // TODO: Paint
     /*
     public static (AM.IBrush? brush, AM.IPen? pen) ToBrushAndPen(this SKPaint paint)
