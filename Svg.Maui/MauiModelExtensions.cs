@@ -1231,7 +1231,7 @@ public static class MauiModelExtensions
             return null;
         }
 
-        using var canvas = new PictureCanvas(rect.Left, rect.Top, rect.Width, rect.Height);
+        using var canvas = new PictureCanvas(0f, 0f, rect.Width, rect.Height);
 
         foreach (var canvasCommand in picture.Commands)
         {
