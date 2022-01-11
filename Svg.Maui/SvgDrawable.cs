@@ -4,6 +4,7 @@ using Microsoft.Maui.Graphics;
 using ShimSkiaSharp;
 using Svg.Model;
 using System.Reflection;
+using System;
 
 namespace Svg.Maui;
 
@@ -125,8 +126,29 @@ public class SvgDrawable : IDrawable
 
             case SetMatrixCanvasCommand setMatrixCanvasCommand:
                 {
+                    // TODO: Workaround becasue ConcatenateTransform throws exception when using with Skia.
                     var matrix = setMatrixCanvasCommand.Matrix.ToMatrix();
-                    canvas.ConcatenateTransform(matrix);
+                    var M11 = matrix.M11;
+                    var M12 = matrix.M12;
+                    var M21 = matrix.M21;
+                    var M22 = matrix.M22;
+                    var M31 = matrix.M31;
+                    var M32 = matrix.M32;
+                    var rotation = Math.Atan2(M12, M11);
+                    var sheary = Math.Atan2(M22, M21) - Math.PI / 2 - rotation;
+                    var translationx = M31;
+                    var translationy = M32;
+                    var scalex = Math.Sqrt(M11 * M11 + M12 * M12);
+                    var scaley = Math.Sqrt(M21 * M21 + M22 * M22) * Math.Cos(sheary);
+
+                    // NOTE: scale(x, y) * skew(0, shear) * rotate(angle) * translate(x, y)
+                    canvas.Scale((float)scalex, (float)scaley);
+                    // TODO: canvas.Skew(0f, sheary);
+                    canvas.Rotate((float)rotation);
+                    canvas.Translate(translationx, translationy);
+
+                    // TODO: Throws exception when using with Skia.
+                    // canvas.ConcatenateTransform(matrix);
                 }
                 break;
 
