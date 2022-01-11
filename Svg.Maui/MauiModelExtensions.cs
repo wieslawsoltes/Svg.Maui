@@ -276,7 +276,7 @@ public static class MauiModelExtensions
     */
 
     // TODO: LinearGradientShader
-    public static LinearGradientPaint? ToLinearGradientBrush(this LinearGradientShader linearGradientShader)
+    public static GradientPaint? ToLinearGradientBrush(this LinearGradientShader linearGradientShader)
     {
         if (linearGradientShader.Colors is null || linearGradientShader.ColorPos is null)
         {
@@ -313,7 +313,7 @@ public static class MauiModelExtensions
     }
 
     // TODO: RadialGradientShader
-    public static RadialGradientPaint? ToRadialGradientBrush(this RadialGradientShader radialGradientShader)
+    public static GradientPaint? ToRadialGradientBrush(this RadialGradientShader radialGradientShader)
     {
         if (radialGradientShader.Colors is null || radialGradientShader.ColorPos is null)
         {
@@ -350,15 +350,14 @@ public static class MauiModelExtensions
     }
 
     // TODO: TwoPointConicalGradientShader
-    /*
-    public static AM.IBrush? ToRadialGradientBrush(this TwoPointConicalGradientShader twoPointConicalGradientShader)
+    public static GradientPaint? ToRadialGradientBrush(this TwoPointConicalGradientShader twoPointConicalGradientShader)
     {
         if (twoPointConicalGradientShader.Colors is null || twoPointConicalGradientShader.ColorPos is null)
         {
             return null;
         }
 
-        var spreadMethod = twoPointConicalGradientShader.Mode.ToGradientSpreadMethod();
+        // TODO: var spreadMethod = twoPointConicalGradientShader.Mode.ToGradientSpreadMethod();
         var center = twoPointConicalGradientShader.Start.ToPoint();
         var gradientOrigin = twoPointConicalGradientShader.End.ToPoint();
 
@@ -370,35 +369,31 @@ public static class MauiModelExtensions
             center = localMatrix.Transform(center);
         }
 
-        var gradientOriginPoint = new A.RelativePoint(gradientOrigin, A.RelativeUnit.Absolute);
-        var centerPoint = new A.RelativePoint(center, A.RelativeUnit.Absolute);
-
         // NOTE: twoPointConicalGradientShader.StartRadius is always 0.0
         var startRadius = twoPointConicalGradientShader.StartRadius;
 
         // TODO: Avalonia is passing 'radius' to 'SKShader.CreateTwoPointConicalGradient' as 'startRadius'
         // TODO: but we need to pass it as 'endRadius' to 'SKShader.CreateTwoPointConicalGradient'
         var endRadius = twoPointConicalGradientShader.EndRadius;
-        var radius = 0.5; // endRadius
+        // TODO: var radius = 0.5; // endRadius
 
-        var gradientStops = new List<AMII.ImmutableGradientStop>();
+        // TODO: Use relative coordinates for center and radius.
+        // TODO: gradientOrigin
+        var radialGradientPaint = new RadialGradientPaint
+        {
+            Center = center,
+            Radius = endRadius
+        };
+
         for (int i = 0; i < twoPointConicalGradientShader.Colors.Length; i++)
         {
             var color = twoPointConicalGradientShader.Colors[i].ToColor();
             var offset = twoPointConicalGradientShader.ColorPos[i];
-            var gradientStop = new AMII.ImmutableGradientStop(offset, color);
-            gradientStops.Add(gradientStop);
+            radialGradientPaint.AddOffset(offset, color);
         }
 
-        return new AMII.ImmutableRadialGradientBrush(
-            gradientStops,
-            1,
-            spreadMethod,
-            centerPoint,
-            gradientOriginPoint,
-            radius);
+        return radialGradientPaint;
     }
-    */
 
     // TODO: Shader
     /*
