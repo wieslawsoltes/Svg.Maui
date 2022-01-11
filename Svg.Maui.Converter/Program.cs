@@ -4,7 +4,7 @@ using Microsoft.Maui.Graphics;
 using Microsoft.Maui.Graphics.Skia;
 using Svg.Maui;
 
-var name = "paths-data-01-t";
+var name = "__tiger";
 //var path = @$"..\..\..\..\..\Svg.Skia\externals\SVG\Tests\W3CTestSuite\svg\{name}.svg";
 var path = @$"..\..\Svg.Skia\externals\SVG\Tests\W3CTestSuite\svg\{name}.svg";
 
