@@ -510,7 +510,7 @@ public static class MauiModelExtensions
         {
             case ColorShader colorShader:
                 var color = colorShader.Color.ToColor();
-                canvas.FillColor = color;
+                canvas.StrokeColor = color;
                 break;
 
             case LinearGradientShader linearGradientShader:
