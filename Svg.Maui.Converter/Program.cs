@@ -76,11 +76,11 @@ class LoggingService : ILoggingService
 {
     void ILoggingService.Log(LogType logType, string message)
     {
-        Console.WriteLine(message);
+        // Console.WriteLine(message);
     }
 
     void ILoggingService.Log(LogType logType, string message, Exception exception)
     {
-        Console.WriteLine(message);
+        // Console.WriteLine(message);
     }
 }
