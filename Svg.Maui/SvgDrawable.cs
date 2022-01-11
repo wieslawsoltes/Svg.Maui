@@ -353,18 +353,21 @@ public class SvgDrawable : IDrawable
 
             case DrawTextCanvasCommand drawTextCanvasCommand:
                 {
-                    // TODO: DrawTextCanvasCommand
-                    /*
-                    if (drawTextCanvasCommand.Paint is { })
+                    if (drawTextCanvasCommand.Paint is { } paint)
                     {
-                        (var brush, _) = drawTextCanvasCommand.Paint.ToBrushAndPen();
-                        var text = drawTextCanvasCommand.Paint.ToFormattedText(drawTextCanvasCommand.Text);
-                        var x = drawTextCanvasCommand.X;
-                        var y = drawTextCanvasCommand.Y;
-                        var origin = new A.Point(x, y - drawTextCanvasCommand.Paint.TextSize);
-                        canvas._commands.Add(new TextDrawCommand(brush, origin, text));
+                        if (IsFilled(paint))
+                        {
+                            paint.SetFont(canvas);
+
+                            var text = drawTextCanvasCommand.Text;
+                            var textAlignment = paint.TextAlign.ToTextAlignment();
+                            var x = drawTextCanvasCommand.X;
+                            var y = drawTextCanvasCommand.Y;
+                            var origin = new PointF(x, y);
+
+                            canvas.DrawString(text, origin.X, origin.Y, textAlignment);
+                        }
                     }
-                    */
                 }
                 break;
 
