@@ -179,9 +179,6 @@ public class SvgDrawable : IDrawable
                 {
                     if (drawPathCanvasCommand.Path is { } path && drawPathCanvasCommand.Paint is { } paint)
                     {
-                        // TODO:
-                        //(var brush, var pen) = drawPathCanvasCommand.Paint.ToBrushAndPen();
-
                         if (path.Commands?.Count == 1)
                         {
                             var pathCommand = path.Commands[0];
@@ -356,6 +353,7 @@ public class SvgDrawable : IDrawable
 
             case DrawTextCanvasCommand drawTextCanvasCommand:
                 {
+                    // TODO: DrawTextCanvasCommand
                     /*
                     if (drawTextCanvasCommand.Paint is { })
                     {
@@ -364,8 +362,9 @@ public class SvgDrawable : IDrawable
                         var x = drawTextCanvasCommand.X;
                         var y = drawTextCanvasCommand.Y;
                         var origin = new A.Point(x, y - drawTextCanvasCommand.Paint.TextSize);
-                        //canvas._commands.Add(new TextDrawCommand(brush, origin, text));
-                    }*/
+                        canvas._commands.Add(new TextDrawCommand(brush, origin, text));
+                    }
+                    */
                 }
                 break;
 
@@ -383,86 +382,5 @@ public class SvgDrawable : IDrawable
     public void Draw(ICanvas canvas, RectangleF dirtyRect)
 	{
 		_picture?.Draw(canvas);
-
-        /*
-        var p = new SolidPaint()
-        {
-            BackgroundColor = Colors.Blue,
-            ForegroundColor = Colors.Orange
-        };
-        canvas.SetFillPaint(p, Rectangle.Zero);
-
-       canvas.FillRectangle(dirtyRect);
-       canvas.DrawRectangle(dirtyRect);
-        */
-
-
-        //canvas.FillColor = Color.FromRgba(222, 222, 222, 255);
-        //canvas.FillRectangle(dirtyRect);
-
-
-
-        //canvas.FillColor = Color.FromRgba(255, 0, 0, 255);
-        //canvas.FillRectangle(new RectangleF(0, 0, 100, 100));
-        //
-        //canvas.StrokeColor = Color.FromRgba(0, 0, 255, 255);
-        //canvas.StrokeSize = 2;
-        //canvas.DrawRectangle(new RectangleF(0, 0, 100, 100));
-
-
-
-        /*
-		IPattern pattern;
-
-		// Create a 10x10 template for the pattern
-		using (PictureCanvas pictureCanvas = new PictureCanvas(0, 0, 10, 10))
-		{
-			pictureCanvas.StrokeColor = Colors.Blue;
-			pictureCanvas.DrawLine(0, 0, 10, 10);
-			pictureCanvas.DrawLine(0, 10, 10, 0);
-
-			var picture = pictureCanvas.Picture;
-			picture.Draw(canvas);
-
-
-			pattern = new PicturePattern(picture, 10, 10);
-		}
-		*/
-
-
-
-        /*
-		// Fill the rectangle with the 10x10 pattern
-		PatternPaint patternPaint = new PatternPaint
-		{
-			Pattern = pattern
-		};
-		canvas.SetFillPaint(patternPaint, RectangleF.Zero);
-		canvas.FillEllipse(10, 10, 250, 250);
-		canvas.DrawEllipse(10, 10, 250, 250);
-
-		*/
-        //pattern.Draw(canvas);
-
-
-        /*
-
-		LinearGradientPaint linearGradientPaint = new LinearGradientPaint
-		{
-			StartColor = Colors.Yellow,
-			EndColor = Colors.Green,
-			StartPoint = new Point(0, 0),
-			EndPoint = new Point(1, 1)
-		};
-
-		linearGradientPaint.AddOffset(0.25f, Colors.Red);
-		linearGradientPaint.AddOffset(0.75f, Colors.Blue);
-
-		RectangleF linearRectangle = new RectangleF(10, 10, 200, 100);
-		canvas.SetFillPaint(linearGradientPaint, linearRectangle);
-		canvas.SetShadow(new SizeF(10, 10), 10, Colors.Grey);
-		canvas.FillRoundedRectangle(linearRectangle, 12);
-		*/
-
     }
 }
