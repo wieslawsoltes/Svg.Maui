@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -10,6 +10,11 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Maui.Graphics.Skia" Version="6.0.101-preview.11.758" />
     <PackageReference Include="SkiaSharp" Version=" 2.88.0-preview.155" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="*.png" />
+    <None Remove=".gitignore" />
   </ItemGroup>
 
   <ItemGroup>
