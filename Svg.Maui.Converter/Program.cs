@@ -20,6 +20,8 @@ if (bmp is null)
     return;
 }
 
+Fonts.Register(new SkiaFontService("", ""));
+
 var dirtyRect = new RectangleF(0, 0, drawable.Picture.Width, drawable.Picture.Height);
 
 drawable.Draw(bmp.Canvas, dirtyRect);
