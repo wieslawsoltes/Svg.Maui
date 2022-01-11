@@ -273,7 +273,10 @@ public static class MauiModelExtensions
                 return AM.GradientSpreadMethod.Reflect;
         }
     }
+    */
 
+    // TODO: LinearGradientShader
+    /*
     public static AM.IBrush? ToLinearGradientBrush(this LinearGradientShader linearGradientShader)
     {
         if (linearGradientShader.Colors is null || linearGradientShader.ColorPos is null)
@@ -312,7 +315,10 @@ public static class MauiModelExtensions
             startPoint,
             endPoint);
     }
+    */
 
+    // TODO: RadialGradientShader
+    /*
     public static AM.IBrush? ToRadialGradientBrush(this RadialGradientShader radialGradientShader)
     {
         if (radialGradientShader.Colors is null || radialGradientShader.ColorPos is null)
@@ -353,7 +359,10 @@ public static class MauiModelExtensions
             gradientOriginPoint,
             radius);
     }
+    */
 
+    // TODO: TwoPointConicalGradientShader
+    /*
     public static AM.IBrush? ToRadialGradientBrush(this TwoPointConicalGradientShader twoPointConicalGradientShader)
     {
         if (twoPointConicalGradientShader.Colors is null || twoPointConicalGradientShader.ColorPos is null)
@@ -429,7 +438,10 @@ public static class MauiModelExtensions
                 return null;
         }
     }
+    */
 
+    // TODO: 
+    /*
     private static AM.IPen ToPen(this SKPaint paint)
     {
         var brush = ToBrush(paint.Shader);
