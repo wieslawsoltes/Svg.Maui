@@ -172,7 +172,7 @@ public static class MauiModelExtensions
         }
     }
 
-    // TODO:
+    // TODO: Typeface
     /*
     public static AM.Typeface? ToTypeface(this SKTypeface? typeface)
     {
@@ -228,7 +228,7 @@ public static class MauiModelExtensions
         return skColors;
     }
 
-    // TODO:
+    // TODO: FilterQuality
     /*
     public static AVMI.BitmapInterpolationMode ToBitmapInterpolationMode(this SKFilterQuality filterQuality)
     {
@@ -256,7 +256,7 @@ public static class MauiModelExtensions
         return new SolidPaint(color);
     }
 
-    // TODO:
+    // TODO: ShaderTileMode
     /*
     public static AM.GradientSpreadMethod ToGradientSpreadMethod(this SKShaderTileMode shaderTileMode)
     {
@@ -403,6 +403,7 @@ public static class MauiModelExtensions
     }
     */
 
+    // TODO: Shader
     /*
     public static AM.IBrush? ToBrush(this SKShader? shader)
     {
@@ -458,6 +459,7 @@ public static class MauiModelExtensions
     }
     */
 
+    // TODO:
     public static void SetFill(this SKShader? shader, ICanvas canvas)
     {
         switch (shader)
@@ -489,6 +491,7 @@ public static class MauiModelExtensions
         }
     }
 
+    // TODO:
     public static void SetStroke(this SKPaint paint, ICanvas canvas)
     {
         switch (paint.Shader)
@@ -542,6 +545,7 @@ public static class MauiModelExtensions
         canvas.MiterLimit = paint.StrokeMiter;
     }
 
+    // TODO: Paint
     /*
     public static (AM.IBrush? brush, AM.IPen? pen) ToBrushAndPen(this SKPaint paint)
     {
@@ -568,7 +572,10 @@ public static class MauiModelExtensions
 
         return (brush, pen);
     }
+    */
 
+    // TODO: Text
+    /*
     public static AM.FormattedText ToFormattedText(this SKPaint paint, string text)
     {
         var typeface = paint.Typeface?.ToTypeface();
@@ -604,7 +611,7 @@ public static class MauiModelExtensions
         }
     }
 
-    // TODO:
+    // TODO: PathDirection
     /*
     public static AM.SweepDirection ToSweepDirection(this SKPathDirection pathDirection)
     {
@@ -810,9 +817,9 @@ public static class MauiModelExtensions
         return pathF;
     }
 
+    // TODO: clipPath
     public static PathF? ToGeometry(this ClipPath clipPath, bool isFilled)
     {
-        // TODO: clipPath
         return null;
     }
 }
