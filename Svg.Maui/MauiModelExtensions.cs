@@ -276,15 +276,14 @@ public static class MauiModelExtensions
     */
 
     // TODO: LinearGradientShader
-    /*
-    public static AM.IBrush? ToLinearGradientBrush(this LinearGradientShader linearGradientShader)
+    public static LinearGradientPaint? ToLinearGradientBrush(this LinearGradientShader linearGradientShader)
     {
         if (linearGradientShader.Colors is null || linearGradientShader.ColorPos is null)
         {
             return null;
         }
 
-        var spreadMethod = linearGradientShader.Mode.ToGradientSpreadMethod();
+        // TODO: var spreadMethod = linearGradientShader.Mode.ToGradientSpreadMethod();
         var start = linearGradientShader.Start.ToPoint();
         var end = linearGradientShader.End.ToPoint();
 
@@ -296,70 +295,59 @@ public static class MauiModelExtensions
             end = localMatrix.Transform(end);
         }
 
-        var startPoint = new A.RelativePoint(start, A.RelativeUnit.Absolute);
-        var endPoint = new A.RelativePoint(end, A.RelativeUnit.Absolute);
+        // TODO: Use relative coordinates for start and end.
+        var linearGradientPaint = new LinearGradientPaint
+        {
+            StartPoint = start,
+            EndPoint = end
+        };
 
-        var gradientStops = new List<AMII.ImmutableGradientStop>();
         for (int i = 0; i < linearGradientShader.Colors.Length; i++)
         {
             var color = linearGradientShader.Colors[i].ToColor();
             var offset = linearGradientShader.ColorPos[i];
-            var gradientStop = new AMII.ImmutableGradientStop(offset, color);
-            gradientStops.Add(gradientStop);
+            linearGradientPaint.AddOffset(offset, color);
         }
 
-        return new AMII.ImmutableLinearGradientBrush(
-            gradientStops,
-            1,
-            spreadMethod,
-            startPoint,
-            endPoint);
+        return linearGradientPaint;
     }
-    */
 
     // TODO: RadialGradientShader
-    /*
-    public static AM.IBrush? ToRadialGradientBrush(this RadialGradientShader radialGradientShader)
+    public static RadialGradientPaint? ToRadialGradientBrush(this RadialGradientShader radialGradientShader)
     {
         if (radialGradientShader.Colors is null || radialGradientShader.ColorPos is null)
         {
             return null;
         }
 
-        var spreadMethod = radialGradientShader.Mode.ToGradientSpreadMethod();
+        // TODO: var spreadMethod = radialGradientShader.Mode.ToGradientSpreadMethod();
         var center = radialGradientShader.Center.ToPoint();
-        var gradientOrigin = center;
 
         if (radialGradientShader.LocalMatrix is { })
         {
             // TODO: radialGradientBrush.LocalMatrix
             var localMatrix = radialGradientShader.LocalMatrix.Value.ToMatrix();
-            gradientOrigin = localMatrix.Transform(gradientOrigin);
             center = localMatrix.Transform(center);
         }
 
-        var gradientOriginPoint = new A.RelativePoint(gradientOrigin, A.RelativeUnit.Absolute);
-        var centerPoint = new A.RelativePoint(center, A.RelativeUnit.Absolute);
         var radius = radialGradientShader.Radius;
 
-        var gradientStops = new List<AMII.ImmutableGradientStop>();
+        // TODO: Use relative coordinates for center and radius.
+        var radialGradientPaint = new RadialGradientPaint
+        {
+            Center = center,
+            Radius = radius
+        };
+
         for (int i = 0; i < radialGradientShader.Colors.Length; i++)
         {
             var color = radialGradientShader.Colors[i].ToColor();
             var offset = radialGradientShader.ColorPos[i];
-            var gradientStop = new AMII.ImmutableGradientStop(offset, color);
-            gradientStops.Add(gradientStop);
+            radialGradientPaint.AddOffset(offset, color);
         }
 
-        return new AMII.ImmutableRadialGradientBrush(
-            gradientStops,
-            1,
-            spreadMethod,
-            centerPoint,
-            gradientOriginPoint,
-            radius);
+        return radialGradientPaint;
     }
-    */
 
     // TODO: TwoPointConicalGradientShader
     /*
@@ -477,28 +465,49 @@ public static class MauiModelExtensions
         switch (shader)
         {
             case ColorShader colorShader:
-                var color = colorShader.Color.ToColor();
-                canvas.FillColor = color;
+                {
+                    var color = colorShader.Color.ToColor();
+                    canvas.FillColor = color;
+                }
                 break; 
 
             case LinearGradientShader linearGradientShader:
-                // TODO:
+                {
+                    var paint = linearGradientShader.ToLinearGradientBrush();
+                    canvas.SetFillPaint(paint, RectangleF.Zero);
+                }
                 break;
 
             case RadialGradientShader radialGradientShader:
-                // TODO:
+                {
+                    var paint = radialGradientShader.ToRadialGradientBrush();
+                    canvas.SetFillPaint(paint, RectangleF.Zero);
+                }
                 break;
 
             case TwoPointConicalGradientShader twoPointConicalGradientShader:
-                // TODO:
+                {
+                    // TODO:
+                }
                 break;
 
             case PictureShader pictureShader:
-                // TODO:
+                {
+                    var picture = pictureShader.Src?.Record(pictureShader.Tile);
+                    var pattern = new PicturePattern(picture);
+                    var paint = new PatternPaint
+                    {
+                        Pattern = pattern
+                    };
+
+                    canvas.SetFillPaint(paint, RectangleF.Zero);
+                }
                 break;
 
             default:
-                // TODO:
+                {
+                    // TODO:
+                }
                 break;
         }
     }
@@ -509,29 +518,40 @@ public static class MauiModelExtensions
         switch (paint.Shader)
         {
             case ColorShader colorShader:
-                var color = colorShader.Color.ToColor();
-                canvas.StrokeColor = color;
+                {
+                    var color = colorShader.Color.ToColor();
+                    canvas.StrokeColor = color;
+                }
                 break;
 
             case LinearGradientShader linearGradientShader:
-                // TODO:
+                {
+                    // TODO:
+                }
                 break;
 
             case RadialGradientShader radialGradientShader:
-                // TODO:
+                {
+                    // TODO:
+                }
                 break;
 
             case TwoPointConicalGradientShader twoPointConicalGradientShader:
-                // TODO:
+                {
+                    // TODO:
+                }
                 break;
 
             case PictureShader pictureShader:
-                // TODO:
+                {
+                    // TODO:
+                }
                 break;
 
             default:
-                // TODO:
-
+                {
+                    // TODO:
+                }
                 break;
         }
 
@@ -563,29 +583,40 @@ public static class MauiModelExtensions
         switch (paint.Shader)
         {
             case ColorShader colorShader:
-                var color = colorShader.Color.ToColor();
-                canvas.FontColor = color;
+                {
+                    var color = colorShader.Color.ToColor();
+                    canvas.FontColor = color;
+                }
                 break;
 
             case LinearGradientShader linearGradientShader:
-                // TODO:
+                {
+                    // TODO:
+                }
                 break;
 
             case RadialGradientShader radialGradientShader:
-                // TODO:
+                {
+                    // TODO:
+                }
                 break;
 
             case TwoPointConicalGradientShader twoPointConicalGradientShader:
-                // TODO:
+                {
+                    // TODO:
+                }
                 break;
 
             case PictureShader pictureShader:
-                // TODO:
+                {
+                    // TODO:
+                }
                 break;
 
             default:
-                // TODO:
-
+                {
+                    // TODO:
+                }
                 break;
         }
 
