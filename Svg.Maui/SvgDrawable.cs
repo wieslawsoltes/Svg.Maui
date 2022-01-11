@@ -31,7 +31,7 @@ public class SvgDrawable : IDrawable
         var skPicture = ToLoadModelFromStream(stream);
         if (skPicture is { })
         {
-            var picture = skPicture.Record();
+            var picture = skPicture.Record(skPicture.CullRect);
             if (picture is { })
             {
                 var drawable = new SvgDrawable { _picture = picture };
