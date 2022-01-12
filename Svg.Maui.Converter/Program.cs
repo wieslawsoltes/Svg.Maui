@@ -7,42 +7,49 @@ using Svg.Maui;
 
 Initialize();
 
-//*
 var fullPath = Path.GetFullPath(@"..\..\Svg.Skia\externals\SVG\Tests\W3CTestSuite\svg");
-Console.WriteLine(fullPath);
 var files = Directory.GetFiles(fullPath, "*.svg");
+
 foreach (var path in files)
 {
     var name = Path.GetFileNameWithoutExtension(path);
     Console.WriteLine(name);
     try
     {
-        Save(path, name + ".png");
+        Convert(path, name + ".png");
     }
     catch (Exception ex)
     {
         Console.WriteLine(ex.Message);
-        // Console.WriteLine(ex.StackTrace);
     }
 }
-//*/
 
-/*
-var name = "__tiger";
-//var path = @$"..\..\..\..\..\Svg.Skia\externals\SVG\Tests\W3CTestSuite\svg\{name}.svg";
-var path = @$"..\..\Svg.Skia\externals\SVG\Tests\W3CTestSuite\svg\{name}.svg";
-Save(path, name + ".png");
-//*/
-
-static void Save(string inputPath, string outputPath)
+static void Initialize()
 {
-    var stream = File.OpenRead(inputPath);
+    Logger.RegisterService(new LoggingService());
+    GraphicsPlatform.RegisterGlobalService(SkiaGraphicsService.Instance);
+    Fonts.Register(new SkiaFontService("", ""));
+}
+
+static SvgDrawable? Open(string path)
+{
+    var stream = File.OpenRead(path);
     if (stream is null)
     {
-        return;
+        return null;
     }
 
     var drawable = SvgDrawable.CreateFromStream(stream);
+    if (drawable?.Picture is null)
+    {
+        return null;
+    }
+
+    return drawable;
+}
+
+static void Save(string path, SvgDrawable? drawable)
+{
     if (drawable?.Picture is null)
     {
         return;
@@ -50,8 +57,7 @@ static void Save(string inputPath, string outputPath)
 
     var width = drawable.Picture.Width;
     var height = drawable.Picture.Height;
-
-    using var bmp = GraphicsPlatform.CurrentService.CreateBitmapExportContext((int)width, (int)height);
+    var bmp = GraphicsPlatform.CurrentService.CreateBitmapExportContext((int)width, (int)height);
     if (bmp is null)
     {
         return;
@@ -61,32 +67,14 @@ static void Save(string inputPath, string outputPath)
 
     drawable.Draw(bmp.Canvas, dirtyRect);
 
-    bmp.WriteToFile(outputPath);
+    bmp.WriteToFile(path);
 }
 
-static void Initialize()
+static void Convert(string inputPath, string outputPath)
 {
-    //Logger.RegisterService(new ConsoleLoggingService());
-    Logger.RegisterService(new LoggingService());
-    GraphicsPlatform.RegisterGlobalService(SkiaGraphicsService.Instance);
-    Fonts.Register(new SkiaFontService("", ""));
-}
-
-class LoggingService : ILoggingService
-{
-    void ILoggingService.Log(LogType logType, string message)
+    var drawable = Open(inputPath);
+    if (drawable is not null)
     {
-#if DEBUG
-        Console.WriteLine(message);
-#endif
-    }
-
-    void ILoggingService.Log(LogType logType, string message, Exception exception)
-    {
-#if DEBUG
-        Console.WriteLine(message);
-        Console.WriteLine(exception.Message);
-        Console.WriteLine(exception.StackTrace);
-#endif
+        Save(outputPath, drawable);
     }
 }
