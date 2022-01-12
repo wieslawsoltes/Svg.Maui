@@ -286,6 +286,8 @@ public static class MauiModelExtensions
         // TODO: var spreadMethod = linearGradientShader.Mode.ToGradientSpreadMethod();
         var start = linearGradientShader.Start.ToPoint();
         var end = linearGradientShader.End.ToPoint();
+
+        // TODO:
         /*
         if (linearGradientShader.LocalMatrix is { })
         {
@@ -306,6 +308,7 @@ public static class MauiModelExtensions
         }
         //*/
 
+        // TODO:
         //start.X = start.X / bounds.Width;
         //start.Y = start.Y / bounds.Height;
         //end.X = end.X / bounds.Width;
