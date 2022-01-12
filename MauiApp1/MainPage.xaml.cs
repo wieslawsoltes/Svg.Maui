@@ -18,6 +18,7 @@ public partial class MainPage : ContentPage
         //var name = "MauiApp1.Resources.Svg.__AJ_Digital_Camera.svg";
         var name = "MauiApp1.Resources.Svg.__tiger.svg";
         //var name = "MauiApp1.Resources.Svg.SVG_logo.svg";
+        //var name = "MauiApp1.Resources.Svg.pservers-grad-01-b.svg";
         var assembly = GetType().GetTypeInfo().Assembly;
 
         _drawable = SvgDrawable.CreateFromResource(name, assembly);
