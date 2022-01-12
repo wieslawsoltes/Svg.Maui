@@ -276,7 +276,7 @@ public static class MauiModelExtensions
     */
 
     // TODO: LinearGradientShader
-    public static Paint? ToPaint(this LinearGradientShader linearGradientShader)
+    public static Paint? ToPaint(this LinearGradientShader linearGradientShader, RectangleF bounds)
     {
         if (linearGradientShader.Colors is null || linearGradientShader.ColorPos is null)
         {
@@ -286,34 +286,47 @@ public static class MauiModelExtensions
         // TODO: var spreadMethod = linearGradientShader.Mode.ToGradientSpreadMethod();
         var start = linearGradientShader.Start.ToPoint();
         var end = linearGradientShader.End.ToPoint();
-
+        /*
         if (linearGradientShader.LocalMatrix is { })
         {
             // TODO: linearGradientShader.LocalMatrix
             var localMatrix = linearGradientShader.LocalMatrix.Value.ToMatrix();
+            localMatrix.M31 = Math.Max(0f, localMatrix.M31 - bounds.Location.X);
+            localMatrix.M32 = Math.Max(0f, localMatrix.M32 - bounds.Location.Y);
+
             start = localMatrix.Transform(start);
             end = localMatrix.Transform(end);
         }
-
-        // TODO: Use relative coordinates for start and end.
-        var linearGradientPaint = new LinearGradientPaint
+        else
         {
-            StartPoint = start,
-            EndPoint = end
-        };
+            start.X = Math.Max(0f, start.X - bounds.Location.X);
+            start.Y = Math.Max(0f, start.Y - bounds.Location.Y);
+            end.X = Math.Max(0f, end.X - bounds.Location.X);
+            end.Y = Math.Max(0f, end.Y - bounds.Location.Y);
+        }
+        //*/
 
+        //start.X = start.X / bounds.Width;
+        //start.Y = start.Y / bounds.Height;
+        //end.X = end.X / bounds.Width;
+        //end.Y = end.X / bounds.Height;
+
+        var gradientStops = new GradientStop[linearGradientShader.Colors.Length];
         for (int i = 0; i < linearGradientShader.Colors.Length; i++)
         {
             var color = linearGradientShader.Colors[i].ToColor();
             var offset = linearGradientShader.ColorPos[i];
-            linearGradientPaint.AddOffset(offset, color);
+            gradientStops[i] = new GradientStop(offset, color);
         }
+
+        // TODO: Use relative coordinates for start and end.
+        var linearGradientPaint = new LinearGradientPaint(gradientStops, start, end);
 
         return linearGradientPaint;
     }
 
     // TODO: RadialGradientShader
-    public static Paint? ToPaint(this RadialGradientShader radialGradientShader)
+    public static Paint? ToPaint(this RadialGradientShader radialGradientShader, RectangleF bounds)
     {
         if (radialGradientShader.Colors is null || radialGradientShader.ColorPos is null)
         {
@@ -332,25 +345,22 @@ public static class MauiModelExtensions
 
         var radius = radialGradientShader.Radius;
 
-        // TODO: Use relative coordinates for center and radius.
-        var radialGradientPaint = new RadialGradientPaint
-        {
-            Center = center,
-            Radius = radius
-        };
-
+        var gradientStops = new GradientStop[radialGradientShader.Colors.Length];
         for (int i = 0; i < radialGradientShader.Colors.Length; i++)
         {
             var color = radialGradientShader.Colors[i].ToColor();
             var offset = radialGradientShader.ColorPos[i];
-            radialGradientPaint.AddOffset(offset, color);
+            gradientStops[i] = new GradientStop(offset, color);
         }
+
+        // TODO: Use relative coordinates for center and radius.
+        var radialGradientPaint = new RadialGradientPaint(gradientStops, center, radius);
 
         return radialGradientPaint;
     }
 
     // TODO: TwoPointConicalGradientShader
-    public static Paint? ToPaint(this TwoPointConicalGradientShader twoPointConicalGradientShader)
+    public static Paint? ToPaint(this TwoPointConicalGradientShader twoPointConicalGradientShader, RectangleF bounds)
     {
         if (twoPointConicalGradientShader.Colors is null || twoPointConicalGradientShader.ColorPos is null)
         {
@@ -379,23 +389,21 @@ public static class MauiModelExtensions
 
         // TODO: Use relative coordinates for center and radius.
         // TODO: gradientOrigin
-        var radialGradientPaint = new RadialGradientPaint
-        {
-            Center = center,
-            Radius = endRadius
-        };
 
+        var gradientStops = new GradientStop[twoPointConicalGradientShader.Colors.Length];
         for (int i = 0; i < twoPointConicalGradientShader.Colors.Length; i++)
         {
             var color = twoPointConicalGradientShader.Colors[i].ToColor();
             var offset = twoPointConicalGradientShader.ColorPos[i];
-            radialGradientPaint.AddOffset(offset, color);
+            gradientStops[i] = new GradientStop(offset, color);
         }
+
+        var radialGradientPaint = new RadialGradientPaint(gradientStops, center, endRadius);
 
         return radialGradientPaint;
     }
 
-    public static Paint? ToPaint(this PictureShader pictureShader)
+    public static Paint? ToPaint(this PictureShader pictureShader, RectangleF bounds)
     {
         var picture = pictureShader.Src?.Record(pictureShader.Tile);
         var pattern = new PicturePattern(picture);
@@ -407,7 +415,7 @@ public static class MauiModelExtensions
         return paint;
     }
 
-    public static Paint? ToPaint(this SKShader? shader)
+    public static Paint? ToPaint(this SKShader? shader, RectangleF bounds)
     {
         switch (shader)
         {
@@ -415,16 +423,16 @@ public static class MauiModelExtensions
                 return ToPaint(colorShader);
 
             case LinearGradientShader linearGradientShader:
-                return ToPaint(linearGradientShader);
+                return ToPaint(linearGradientShader, bounds);
 
             case RadialGradientShader radialGradientShader:
-                return ToPaint(radialGradientShader);
+                return ToPaint(radialGradientShader, bounds);
 
             case TwoPointConicalGradientShader twoPointConicalGradientShader:
-                return ToPaint(twoPointConicalGradientShader);
+                return ToPaint(twoPointConicalGradientShader, bounds);
 
             case PictureShader pictureShader:
-                return ToPaint(pictureShader);
+                return ToPaint(pictureShader, bounds);
 
             default:
                 return null;
@@ -432,7 +440,7 @@ public static class MauiModelExtensions
     }
 
     // TODO:
-    public static void SetFill(this SKShader? shader, ICanvas canvas)
+    public static void SetFill(this SKShader? shader, ICanvas canvas, RectangleF bounds)
     {
         switch (shader)
         {
@@ -445,28 +453,29 @@ public static class MauiModelExtensions
 
             case LinearGradientShader linearGradientShader:
                 {
-                    var paint = linearGradientShader.ToPaint();
-                    canvas.SetFillPaint(paint, RectangleF.Zero);
+                    var paint = linearGradientShader.ToPaint(bounds);
+                    canvas.SetFillPaint(paint, bounds);
                 }
                 break;
 
             case RadialGradientShader radialGradientShader:
                 {
-                    var paint = radialGradientShader.ToPaint();
-                    canvas.SetFillPaint(paint, RectangleF.Zero);
+                    var paint = radialGradientShader.ToPaint(bounds);
+                    canvas.SetFillPaint(paint, bounds);
                 }
                 break;
 
             case TwoPointConicalGradientShader twoPointConicalGradientShader:
                 {
-                    // TODO:
+                    var paint = twoPointConicalGradientShader.ToPaint(bounds);
+                    canvas.SetFillPaint(paint, bounds);
                 }
                 break;
 
             case PictureShader pictureShader:
                 {
-                    var paint = pictureShader.ToPaint();
-                    canvas.SetFillPaint(paint, RectangleF.Zero);
+                    var paint = pictureShader.ToPaint(bounds);
+                    canvas.SetFillPaint(paint, bounds);
                 }
                 break;
 
@@ -479,9 +488,9 @@ public static class MauiModelExtensions
     }
 
     // TODO:
-    public static void SetStroke(this SKPaint paint, ICanvas canvas)
+    public static void SetStroke(this SKPaint skPaint, ICanvas canvas, RectangleF bounds)
     {
-        switch (paint.Shader)
+        switch (skPaint.Shader)
         {
             case ColorShader colorShader:
                 {
@@ -492,24 +501,28 @@ public static class MauiModelExtensions
 
             case LinearGradientShader linearGradientShader:
                 {
+                    var paint = linearGradientShader.ToPaint(bounds);
                     // TODO:
                 }
                 break;
 
             case RadialGradientShader radialGradientShader:
                 {
+                    var paint = radialGradientShader.ToPaint(bounds);
                     // TODO:
                 }
                 break;
 
             case TwoPointConicalGradientShader twoPointConicalGradientShader:
                 {
+                    var paint = twoPointConicalGradientShader.ToPaint(bounds);
                     // TODO:
                 }
                 break;
 
             case PictureShader pictureShader:
                 {
+                    var paint = pictureShader.ToPaint(bounds);
                     // TODO:
                 }
                 break;
@@ -521,30 +534,30 @@ public static class MauiModelExtensions
                 break;
         }
 
-        var lineCap = paint.StrokeCap.ToPenLineCap();
-        var lineJoin = paint.StrokeJoin.ToPenLineJoin();
+        var lineCap = skPaint.StrokeCap.ToPenLineCap();
+        var lineJoin = skPaint.StrokeJoin.ToPenLineJoin();
 
         var dashPattern = default(float[]);
-        if (paint.PathEffect is DashPathEffect dashPathEffect && dashPathEffect.Intervals is { })
+        if (skPaint.PathEffect is DashPathEffect dashPathEffect && dashPathEffect.Intervals is { })
         {
             var dashes = new List<double>();
             foreach (var interval in dashPathEffect.Intervals)
             {
-                dashes.Add(interval / paint.StrokeWidth);
+                dashes.Add(interval / skPaint.StrokeWidth);
             }
-            var offset = dashPathEffect.Phase / paint.StrokeWidth;
+            var offset = dashPathEffect.Phase / skPaint.StrokeWidth;
             // TODO: offset
         }
 
-        canvas.StrokeSize = paint.StrokeWidth;
+        canvas.StrokeSize = skPaint.StrokeWidth;
         canvas.StrokeDashPattern = dashPattern;
         canvas.StrokeLineJoin = lineJoin;
         canvas.StrokeLineCap = lineCap;
-        canvas.MiterLimit = paint.StrokeMiter;
+        canvas.MiterLimit = skPaint.StrokeMiter;
     }
 
     // TODO:
-    public static void SetFont(this SKPaint paint, ICanvas canvas)
+    public static void SetFont(this SKPaint paint, ICanvas canvas, RectangleF bounds)
     {
         switch (paint.Shader)
         {
@@ -1000,13 +1013,13 @@ public static class MauiModelExtensions
 
                                         if (IsFilled(paint))
                                         {
-                                            paint.Shader.SetFill(canvas);
+                                            paint.Shader.SetFill(canvas, rect);
                                             canvas.FillRectangle(rect);
                                         }
 
                                         if (IsStroked(paint))
                                         {
-                                            paint.SetStroke(canvas);
+                                            paint.SetStroke(canvas, rect);
                                             canvas.DrawRectangle(rect);
                                         }
 
@@ -1024,13 +1037,13 @@ public static class MauiModelExtensions
 
                                         if (IsFilled(paint))
                                         {
-                                            paint.Shader.SetFill(canvas);
+                                            paint.Shader.SetFill(canvas, rect);
                                             canvas.FillRoundedRectangle(rect, rx);
                                         }
 
                                         if (IsStroked(paint))
                                         {
-                                            paint.SetStroke(canvas);
+                                            paint.SetStroke(canvas, rect);
                                             canvas.DrawRoundedRectangle(rect, rx);
                                         }
 
@@ -1044,13 +1057,13 @@ public static class MauiModelExtensions
 
                                         if (IsFilled(paint))
                                         {
-                                            paint.Shader.SetFill(canvas);
+                                            paint.Shader.SetFill(canvas, rect);
                                             canvas.FillEllipse(rect);
                                         }
 
                                         if (IsStroked(paint))
                                         {
-                                            paint.SetStroke(canvas);
+                                            paint.SetStroke(canvas, rect);
                                             canvas.DrawEllipse(rect);
                                         }
 
@@ -1063,16 +1076,17 @@ public static class MauiModelExtensions
                                         var x = addCirclePathCommand.X;
                                         var y = addCirclePathCommand.Y;
                                         var radius = addCirclePathCommand.Radius;
+                                        var rect = new RectangleF(x - radius, y - radius, radius + radius, radius + radius);
 
                                         if (IsFilled(paint))
                                         {
-                                            paint.Shader.SetFill(canvas);
+                                            paint.Shader.SetFill(canvas, rect);
                                             canvas.FillCircle(x, y, radius);
                                         }
 
                                         if (IsStroked(paint))
                                         {
-                                            paint.SetStroke(canvas);
+                                            paint.SetStroke(canvas, rect);
                                             canvas.DrawCircle(x, y, radius);
                                         }
 
@@ -1089,13 +1103,13 @@ public static class MauiModelExtensions
 
                                             if (IsFilled(paint))
                                             {
-                                                paint.Shader.SetFill(canvas);
+                                                paint.Shader.SetFill(canvas, pathF.Bounds);
                                                 canvas.FillPath(pathF, WindingMode.NonZero);
                                             }
 
                                             if (IsStroked(paint))
                                             {
-                                                paint.SetStroke(canvas);
+                                                paint.SetStroke(canvas, pathF.Bounds);
                                                 canvas.DrawPath(pathF);
                                             }
 
@@ -1120,10 +1134,12 @@ public static class MauiModelExtensions
                             {
                                 var p1 = new Point(moveTo.X, moveTo.Y);
                                 var p2 = new Point(lineTo.X, lineTo.Y);
+                                // TODO: Calculate correct bounds.
+                                var rect = RectangleF.Zero;
 
                                 if (IsStroked(paint))
                                 {
-                                    paint.SetStroke(canvas);
+                                    paint.SetStroke(canvas, rect);
                                     canvas.DrawLine(p1, p2);
                                 }
                                 break;
@@ -1138,13 +1154,13 @@ public static class MauiModelExtensions
 
                                 if (IsFilled(paint))
                                 {
-                                    paint.Shader.SetFill(canvas);
+                                    paint.Shader.SetFill(canvas, pathF.Bounds);
                                     canvas.FillPath(pathF, windingMode);
                                 }
 
                                 if (IsStroked(paint))
                                 {
-                                    paint.SetStroke(canvas);
+                                    paint.SetStroke(canvas, pathF.Bounds);
                                     canvas.DrawPath(pathF);
                                 }
                             }
@@ -1165,7 +1181,10 @@ public static class MauiModelExtensions
                     {
                         if (IsFilled(paint))
                         {
-                            paint.SetFont(canvas);
+                            // TODO: Calculate correct bounds.
+                            var rect = RectangleF.Zero;
+
+                            paint.SetFont(canvas, rect);
 
                             var text = drawTextCanvasCommand.Text;
                             var textAlignment = paint.TextAlign.ToTextAlignment();
