@@ -4,7 +4,6 @@ using Microsoft.Maui.Graphics;
 using ShimSkiaSharp;
 using Svg.Model;
 using System.Reflection;
-using System;
 
 namespace Svg.Maui;
 
@@ -53,6 +52,57 @@ public class SvgDrawable : IDrawable
         return document is { } 
             ? SvgExtensions.ToModel(document, s_assetLoader, out _, out _) 
             : null;
+    }
+
+    public static SvgDrawable? Open(string path)
+    {
+        var stream = File.OpenRead(path);
+        if (stream is null)
+        {
+            return null;
+        }
+
+        var drawable = CreateFromStream(stream);
+        if (drawable?.Picture is null)
+        {
+            return null;
+        }
+
+        return drawable;
+    }
+
+    public static void Save(string path, SvgDrawable? drawable)
+    {
+        if (drawable?.Picture is null)
+        {
+            return;
+        }
+
+        var x = drawable.Picture.X;
+        var y = drawable.Picture.Y;
+        var width = drawable.Picture.Width;
+        var height = drawable.Picture.Height;
+
+        var bmp = GraphicsPlatform.CurrentService.CreateBitmapExportContext((int)width, (int)height);
+        if (bmp is null)
+        {
+            return;
+        }
+
+        var dirtyRect = new RectangleF(x, y, width, height);
+
+        drawable.Draw(bmp.Canvas, dirtyRect);
+
+        bmp.WriteToFile(path);
+    }
+
+    public static void Convert(string inputPath, string outputPath)
+    {
+        var drawable = Open(inputPath);
+        if (drawable is not null)
+        {
+            Save(outputPath, drawable);
+        }
     }
 
     public void Draw(ICanvas canvas, RectangleF dirtyRect)
