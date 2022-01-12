@@ -55,9 +55,6 @@
 	  <Compile Include="..\Svg.Maui\MauiAssetLoader.cs" Link="Svg.Maui\MauiAssetLoader.cs" />
 	  <Compile Include="..\Svg.Maui\MauiModelExtensions.cs" Link="Svg.Maui\MauiModelExtensions.cs" />
 	  <Compile Include="..\Svg.Maui\SvgDrawable.cs" Link="Svg.Maui\SvgDrawable.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <EmbeddedResource Include="Resources\Svg\*.svg" />
 	</ItemGroup>
 
@@ -67,10 +64,6 @@
 
     <ItemGroup>
       <PackageReference Include="Svg.Model" Version="0.5.11.1" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Svg.Maui\" />
     </ItemGroup>
 
 	<PropertyGroup Condition="$(TargetFramework.Contains('-windows'))">
