@@ -198,10 +198,10 @@ public static class MauiModelExtensions
     public static Color ToColor(this SKColorF color)
     {
         return new Color(
-            (byte)(color.Alpha * 255f),
             (byte)(color.Red * 255f),
             (byte)(color.Green * 255f),
-            (byte)(color.Blue * 255f));
+            (byte)(color.Blue * 255f),
+            (byte)(color.Alpha * 255f));
     }
 
     public static Color[] ToColors(this SKColor[] colors)
