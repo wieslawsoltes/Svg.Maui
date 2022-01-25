@@ -6,4 +6,4 @@ Svg rendering support for [Microsoft.Maui.Graphics](https://github.com/dotnet/Mi
 
 ## License
 
-Svg.Maui is licensed under the AGPL-3.0 license](LICENSE).
+Svg.Maui is licensed under the [AGPL-3.0 license](LICENSE).
