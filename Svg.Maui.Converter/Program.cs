@@ -9,7 +9,7 @@ Logger.RegisterService(new LoggingService());
 GraphicsPlatform.RegisterGlobalService(SkiaGraphicsService.Instance);
 Fonts.Register(new SkiaFontService("", ""));
 
-var fullPath = Path.GetFullPath(@"..\..\Svg.Skia\externals\SVG\Tests\W3CTestSuite\svg");
+var fullPath = Path.GetFullPath(args.Length == 1 ? args[0] : "./");
 var files = Directory.GetFiles(fullPath, "*.svg");
 
 foreach (var path in files)
