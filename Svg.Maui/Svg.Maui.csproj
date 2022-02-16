@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>disable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Svg.Model" Version="0.5.11.1" />
-    <PackageReference Include="Microsoft.Maui.Graphics" Version="6.0.101-preview.11.758" />
+    <PackageReference Include="Svg.Model" Version="0.5.12" />
+    <PackageReference Include="Microsoft.Maui.Graphics" Version="6.0.200-preview.13.935" />
   </ItemGroup>
 
 </Project>

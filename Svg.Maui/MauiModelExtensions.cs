@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Numerics;
 using ShimSkiaSharp;
 using Microsoft.Maui.Graphics;
+using Microsoft.Maui.Graphics.Platform;
 
 namespace Svg.Maui;
 
@@ -61,7 +62,8 @@ public static class MauiModelExtensions
         {
             return null;
         }
-        return GraphicsPlatform.CurrentService.LoadImageFromBytes(image.Data);
+
+        return new PlatformImage(image.Data);
     }
 
     public static LineCap ToPenLineCap(this SKStrokeCap strokeCap)
@@ -112,48 +114,45 @@ public static class MauiModelExtensions
         }
     }
 
-    // TODO: IFontStyle.Weight
-    /*
-    public static AM.FontWeight ToFontWeight(this SKFontStyleWeight fontStyleWeight)
+    public static int ToFontWeight(this SKFontStyleWeight fontStyleWeight)
     {
         switch (fontStyleWeight)
         {
             default:
             case SKFontStyleWeight.Invisible:
-                // TODO: FontStyleWeight.Invisible
-                throw new NotSupportedException();
+                return 0;
+
             case SKFontStyleWeight.Thin:
-                return AM.FontWeight.Thin;
+                return 100;
 
             case SKFontStyleWeight.ExtraLight:
-                return AM.FontWeight.ExtraLight;
+                return 200;
 
             case SKFontStyleWeight.Light:
-                return AM.FontWeight.Light;
+                return 300;
 
             case SKFontStyleWeight.Normal:
-                return AM.FontWeight.Normal;
+                return 400;
 
             case SKFontStyleWeight.Medium:
-                return AM.FontWeight.Medium;
+                return 500;
 
             case SKFontStyleWeight.SemiBold:
-                return AM.FontWeight.SemiBold;
+                return 600;
 
             case SKFontStyleWeight.Bold:
-                return AM.FontWeight.Bold;
+                return 700;
 
             case SKFontStyleWeight.ExtraBold:
-                return AM.FontWeight.ExtraBold;
+                return 800;
 
             case SKFontStyleWeight.Black:
-                return AM.FontWeight.Black;
+                return 900;
 
             case SKFontStyleWeight.ExtraBlack:
-                return AM.FontWeight.ExtraBlack;
+                return 1000;
         }
     }
-    */
 
     public static FontStyleType ToFontStyle(this SKFontStyleSlant fontStyleSlant)
     {
@@ -607,18 +606,19 @@ public static class MauiModelExtensions
 
         if (paint.Typeface is { } typeface)
         {
-            // TODO: var weight = typeface.FontWeight.ToFontWeight();
+            var weight = typeface.FontWeight.ToFontWeight();
 
             // TODO: typeface.FontWidth
 
-            // TODO: var slant = typeface.Style.ToFontStyle();
+            var slant = typeface.Style.ToFontStyle();
 
             var familyName = typeface.FamilyName;
-            canvas.FontName = familyName;
+            
+            canvas.Font = new Font(familyName, weight, slant);
         }
         else
         {
-            canvas.SetToSystemFont();
+            canvas.Font = Font.Default;
         }
     }
 
@@ -1103,6 +1103,11 @@ public static class MauiModelExtensions
                                         {
                                             var close = addPolyPathCommand.Close;
                                             var pathF = addPolyPathCommand.Points.ToGeometry(close);
+
+                                            if (pathF is null)
+                                            {
+                                                break;
+                                            }
 
                                             if (IsFilled(paint))
                                             {

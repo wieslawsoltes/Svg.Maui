@@ -1,6 +1,7 @@
 ﻿#nullable enable
 using System.IO;
 using Microsoft.Maui.Graphics;
+using Microsoft.Maui.Graphics.Platform;
 using ShimSkiaSharp;
 using Svg.Model;
 using System.Reflection;
@@ -71,7 +72,7 @@ public class SvgDrawable : IDrawable
         return drawable;
     }
 
-    public static void Save(string path, SvgDrawable? drawable)
+    public static void Save(string path, SvgDrawable? drawable, IBitmapExportService bitmapExportService)
     {
         if (drawable?.Picture is null)
         {
@@ -83,7 +84,7 @@ public class SvgDrawable : IDrawable
         var width = drawable.Picture.Width;
         var height = drawable.Picture.Height;
 
-        var bmp = GraphicsPlatform.CurrentService.CreateBitmapExportContext((int)width, (int)height);
+        var bmp = bitmapExportService.CreateContext((int)width, (int)height);
         if (bmp is null)
         {
             return;
@@ -96,12 +97,12 @@ public class SvgDrawable : IDrawable
         bmp.WriteToFile(path);
     }
 
-    public static void Convert(string inputPath, string outputPath)
+    public static void Convert(string inputPath, string outputPath, IBitmapExportService bitmapExportService)
     {
         var drawable = Open(inputPath);
         if (drawable is not null)
         {
-            Save(outputPath, drawable);
+            Save(outputPath, drawable, bitmapExportService);
         }
     }
 

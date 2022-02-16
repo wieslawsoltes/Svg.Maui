@@ -1,6 +1,7 @@
 ﻿#nullable enable
-using Microsoft.Maui.Graphics;
 using System.IO;
+using Microsoft.Maui.Graphics;
+using Microsoft.Maui.Graphics.Platform;
 using ShimSkiaSharp;
 using Svg.Model;
 
@@ -10,8 +11,8 @@ public class MauiAssetLoader : IAssetLoader
 {
 	public SKImage LoadImage(Stream stream)
 	{
-		var image = GraphicsPlatform.CurrentService.LoadImageFromStream(stream);
-		return new SKImage
+        var image = PlatformImage.FromStream(stream);
+        return new SKImage
 		{
 			Data = ImageExtensions.AsBytes(image),
 			Width = (float)image.Width,
