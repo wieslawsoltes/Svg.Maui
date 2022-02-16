@@ -31,8 +31,8 @@ namespace MauiAppSample
             //     graphicsView.HeightRequest = _drawable.Picture.Height;
             // }
 
-            //var fullPath = @"c:\DOWNLOADS\GitHub\Svg.Skia\externals\SVG\Tests\W3CTestSuite\svg";
-            var fullPath = @"c:\Users\Administrator\Documents\GitHub\SVG\Tests\W3CTestSuite\svg\";
+            var fullPath = @"c:\DOWNLOADS\GitHub\Svg.Skia\externals\SVG\Tests\W3CTestSuite\svg";
+            //var fullPath = @"c:\Users\Administrator\Documents\GitHub\SVG\Tests\W3CTestSuite\svg\";
             var files = Directory.GetFiles(fullPath, "*.svg").Select(x =>
             {
                 return new Item()
@@ -49,7 +49,6 @@ namespace MauiAppSample
 
             listView.ItemTapped += ListView_ItemTapped;
         }
-
 
         private void ListView_ItemTapped(object? sender, ItemTappedEventArgs e)
         {
