@@ -1,9 +1,9 @@
 ﻿#nullable enable
 using System.IO;
+using System.Reflection;
 using Microsoft.Maui.Graphics;
 using ShimSkiaSharp;
 using Svg.Model;
-using System.Reflection;
 
 namespace Svg.Maui;
 
