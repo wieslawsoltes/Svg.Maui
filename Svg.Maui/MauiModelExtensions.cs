@@ -172,22 +172,23 @@ public static class MauiModelExtensions
     }
 
     // TODO: Typeface
-    /*
-    public static AM.Typeface? ToTypeface(this SKTypeface? typeface)
+    public static Font? ToTypeface(this SKTypeface? typeface)
     {
         if (typeface is null)
         {
             return null;
         }
 
-        var familyName = typeface.FamilyName;
         var weight = typeface.FontWeight.ToFontWeight();
+
         // TODO: typeface.FontWidth
+
         var slant = typeface.Style.ToFontStyle();
 
-        return new AM.Typeface(familyName, slant, weight);
+        var familyName = typeface.FamilyName;
+
+        return new Font(familyName, weight, slant);
     }
-    */
 
     public static Color ToColor(this SKColor color)
     {
@@ -606,15 +607,7 @@ public static class MauiModelExtensions
 
         if (paint.Typeface is { } typeface)
         {
-            var weight = typeface.FontWeight.ToFontWeight();
-
-            // TODO: typeface.FontWidth
-
-            var slant = typeface.Style.ToFontStyle();
-
-            var familyName = typeface.FamilyName;
-            
-            canvas.Font = new Font(familyName, weight, slant);
+            canvas.Font = typeface.ToTypeface();
         }
         else
         {
