@@ -3,7 +3,7 @@
              x:Class="MauiAppSample.MainPage"
              BackgroundColor="{DynamicResource SecondaryColor}">
   <Grid ColumnDefinitions="200,*">
-    <ListView x:Name="listView" SelectionMode="Single" IsGroupingEnabled="False"  Grid.Column="0">
+    <ListView x:Name="listView" SelectionMode="Single" IsGroupingEnabled="False" Grid.Column="0">
       <ListView.ItemTemplate>
         <DataTemplate>
           <TextCell Text="{Binding Name}"/>
