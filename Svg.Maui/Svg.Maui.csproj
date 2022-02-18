@@ -14,7 +14,7 @@
     <Company>Wiesław Šoltés</Company>
     <Description>An SVG rendering library for Microsoft.Maui.Graphics.</Description>
     <Copyright>Copyright © Wiesław Šoltés 2022</Copyright>
-    <PackageLicenseExpression>AGPL-3.0-or-later</PackageLicenseExpression>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <PropertyGroup>
