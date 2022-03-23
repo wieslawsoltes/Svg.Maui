@@ -6,7 +6,3 @@
 [![NuGet](https://img.shields.io/nuget/dt/Svg.Maui.svg)](https://www.nuget.org/packages/Svg.Maui)
 
 Svg rendering support for [Microsoft.Maui.Graphics](https://github.com/dotnet/Microsoft.Maui.Graphics)
-
-## License
-
-Svg.Maui is licensed under the [MIT license](LICENSE).
