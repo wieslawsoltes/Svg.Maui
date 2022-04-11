@@ -89,7 +89,7 @@ public class SvgDrawable : IDrawable
             return;
         }
 
-        var dirtyRect = new RectangleF(x, y, width, height);
+        var dirtyRect = new RectF(x, y, width, height);
 
         drawable.Draw(bmp.Canvas, dirtyRect);
 
@@ -105,7 +105,7 @@ public class SvgDrawable : IDrawable
         }
     }
 
-    public void Draw(ICanvas canvas, RectangleF dirtyRect)
+    public void Draw(ICanvas canvas, RectF dirtyRect)
 	{
 		_picture?.Draw(canvas);
     }
