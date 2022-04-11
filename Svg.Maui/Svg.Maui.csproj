@@ -22,7 +22,7 @@
 
   <ItemGroup>
     <PackageReference Include="Svg.Model" Version="0.5.12" />
-    <PackageReference Include="Microsoft.Maui.Graphics" Version="6.0.200-preview.13.935" />
+    <PackageReference Include="Microsoft.Maui.Graphics" Version="6.0.200-preview.14.1092" />
   </ItemGroup>
 
 </Project>
