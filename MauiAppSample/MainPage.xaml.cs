@@ -43,16 +43,14 @@ namespace MauiAppSample
                 };
             });
 
-            listView.ItemsSource = files;
+            collectionView.ItemsSource = files;
 
-            listView.ItemSelected += ListView_ItemSelected;
-
-            listView.ItemTapped += ListView_ItemTapped;
+            collectionView.SelectionChanged += CollectionView_SelectionChanged;
         }
 
-        private void ListView_ItemTapped(object? sender, ItemTappedEventArgs e)
+        private void CollectionView_SelectionChanged(object? sender, SelectionChangedEventArgs e)
         {
-            var item = e.Group as Item;
+            var item = e.CurrentSelection.FirstOrDefault() as Item;
             if (item?.Path is { })
             {
                 var drawable = item.Drawable;
@@ -74,11 +72,6 @@ namespace MauiAppSample
                     graphicsView.Invalidate();
                 }
             }
-        }
-
-        private void ListView_ItemSelected(object? sender, SelectedItemChangedEventArgs e)
-        {
-
         }
 
         private async void ButtonOpen_Clicked(object sender, EventArgs args)
