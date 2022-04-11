@@ -39,9 +39,9 @@ public static class MauiModelExtensions
         return new Size(size.Width, size.Height);
     }
 
-    public static RectangleF ToRect(this SKRect rect)
+    public static RectF ToRect(this SKRect rect)
     {
-        return new RectangleF(rect.Left, rect.Top, rect.Width, rect.Height);
+        return new RectF(rect.Left, rect.Top, rect.Width, rect.Height);
     }
 
     public static Matrix3x2 ToMatrix(this SKMatrix matrix)
@@ -276,7 +276,7 @@ public static class MauiModelExtensions
     */
 
     // TODO: LinearGradientShader
-    public static Paint? ToPaint(this LinearGradientShader linearGradientShader, RectangleF bounds)
+    public static Paint? ToPaint(this LinearGradientShader linearGradientShader, RectF bounds)
     {
         if (linearGradientShader.Colors is null || linearGradientShader.ColorPos is null)
         {
@@ -329,7 +329,7 @@ public static class MauiModelExtensions
     }
 
     // TODO: RadialGradientShader
-    public static Paint? ToPaint(this RadialGradientShader radialGradientShader, RectangleF bounds)
+    public static Paint? ToPaint(this RadialGradientShader radialGradientShader, RectF bounds)
     {
         if (radialGradientShader.Colors is null || radialGradientShader.ColorPos is null)
         {
@@ -363,7 +363,7 @@ public static class MauiModelExtensions
     }
 
     // TODO: TwoPointConicalGradientShader
-    public static Paint? ToPaint(this TwoPointConicalGradientShader twoPointConicalGradientShader, RectangleF bounds)
+    public static Paint? ToPaint(this TwoPointConicalGradientShader twoPointConicalGradientShader, RectF bounds)
     {
         if (twoPointConicalGradientShader.Colors is null || twoPointConicalGradientShader.ColorPos is null)
         {
@@ -406,7 +406,7 @@ public static class MauiModelExtensions
         return radialGradientPaint;
     }
 
-    public static Paint? ToPaint(this PictureShader pictureShader, RectangleF bounds)
+    public static Paint? ToPaint(this PictureShader pictureShader, RectF bounds)
     {
         var picture = pictureShader.Src?.Record(pictureShader.Tile);
         var pattern = new PicturePattern(picture);
@@ -418,7 +418,7 @@ public static class MauiModelExtensions
         return paint;
     }
 
-    public static Paint? ToPaint(this SKShader? shader, RectangleF bounds)
+    public static Paint? ToPaint(this SKShader? shader, RectF bounds)
     {
         switch (shader)
         {
@@ -443,7 +443,7 @@ public static class MauiModelExtensions
     }
 
     // TODO:
-    public static void SetFill(this SKShader? shader, ICanvas canvas, RectangleF bounds)
+    public static void SetFill(this SKShader? shader, ICanvas canvas, RectF bounds)
     {
         switch (shader)
         {
@@ -491,7 +491,7 @@ public static class MauiModelExtensions
     }
 
     // TODO:
-    public static void SetStroke(this SKPaint skPaint, ICanvas canvas, RectangleF bounds)
+    public static void SetStroke(this SKPaint skPaint, ICanvas canvas, RectF bounds)
     {
         switch (skPaint.Shader)
         {
@@ -560,7 +560,7 @@ public static class MauiModelExtensions
     }
 
     // TODO:
-    public static void SetFont(this SKPaint paint, ICanvas canvas, RectangleF bounds)
+    public static void SetFont(this SKPaint paint, ICanvas canvas, RectF bounds)
     {
         switch (paint.Shader)
         {
@@ -1072,7 +1072,7 @@ public static class MauiModelExtensions
                                         var x = addCirclePathCommand.X;
                                         var y = addCirclePathCommand.Y;
                                         var radius = addCirclePathCommand.Radius;
-                                        var rect = new RectangleF(x - radius, y - radius, radius + radius, radius + radius);
+                                        var rect = new RectF(x - radius, y - radius, radius + radius, radius + radius);
 
                                         if (IsFilled(paint))
                                         {
@@ -1136,7 +1136,7 @@ public static class MauiModelExtensions
                                 var p1 = new Point(moveTo.X, moveTo.Y);
                                 var p2 = new Point(lineTo.X, lineTo.Y);
                                 // TODO: Calculate correct bounds.
-                                var rect = RectangleF.Zero;
+                                var rect = RectF.Zero;
 
                                 if (IsStroked(paint))
                                 {
@@ -1183,7 +1183,7 @@ public static class MauiModelExtensions
                         if (IsFilled(paint))
                         {
                             // TODO: Calculate correct bounds.
-                            var rect = RectangleF.Zero;
+                            var rect = RectF.Zero;
 
                             paint.SetFont(canvas, rect);
 
