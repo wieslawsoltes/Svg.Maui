@@ -314,12 +314,12 @@ public static class MauiModelExtensions
         //end.X = end.X / bounds.Width;
         //end.Y = end.X / bounds.Height;
 
-        var gradientStops = new GradientStop[linearGradientShader.Colors.Length];
+        var gradientStops = new PaintGradientStop[linearGradientShader.Colors.Length];
         for (int i = 0; i < linearGradientShader.Colors.Length; i++)
         {
             var color = linearGradientShader.Colors[i].ToColor();
             var offset = linearGradientShader.ColorPos[i];
-            gradientStops[i] = new GradientStop(offset, color);
+            gradientStops[i] = new PaintGradientStop(offset, color);
         }
 
         // TODO: Use relative coordinates for start and end.
@@ -348,12 +348,12 @@ public static class MauiModelExtensions
 
         var radius = radialGradientShader.Radius;
 
-        var gradientStops = new GradientStop[radialGradientShader.Colors.Length];
+        var gradientStops = new PaintGradientStop[radialGradientShader.Colors.Length];
         for (int i = 0; i < radialGradientShader.Colors.Length; i++)
         {
             var color = radialGradientShader.Colors[i].ToColor();
             var offset = radialGradientShader.ColorPos[i];
-            gradientStops[i] = new GradientStop(offset, color);
+            gradientStops[i] = new PaintGradientStop(offset, color);
         }
 
         // TODO: Use relative coordinates for center and radius.
@@ -393,12 +393,12 @@ public static class MauiModelExtensions
         // TODO: Use relative coordinates for center and radius.
         // TODO: gradientOrigin
 
-        var gradientStops = new GradientStop[twoPointConicalGradientShader.Colors.Length];
+        var gradientStops = new PaintGradientStop[twoPointConicalGradientShader.Colors.Length];
         for (int i = 0; i < twoPointConicalGradientShader.Colors.Length; i++)
         {
             var color = twoPointConicalGradientShader.Colors[i].ToColor();
             var offset = twoPointConicalGradientShader.ColorPos[i];
-            gradientStops[i] = new GradientStop(offset, color);
+            gradientStops[i] = new PaintGradientStop(offset, color);
         }
 
         var radialGradientPaint = new RadialGradientPaint(gradientStops, center, endRadius);
