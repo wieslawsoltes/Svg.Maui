@@ -8,8 +8,8 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <VersionPrefix>6.0.200</VersionPrefix>
-    <VersionSuffix>preview.13.935</VersionSuffix>
+    <VersionPrefix>6.0.300</VersionPrefix>
+    <VersionSuffix></VersionSuffix>
     <Authors>Wiesław Šoltés</Authors>
     <Company>Wiesław Šoltés</Company>
     <Description>An SVG rendering library for Microsoft.Maui.Graphics.</Description>
@@ -21,8 +21,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Svg.Model" Version="0.5.13" />
-    <PackageReference Include="Microsoft.Maui.Graphics" Version="6.0.300-rc.3.1336" />
+    <PackageReference Include="Svg.Model" Version="0.5.14" />
+    <PackageReference Include="Microsoft.Maui.Graphics" Version="6.0.300" />
   </ItemGroup>
 
 </Project>
