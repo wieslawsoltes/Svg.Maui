@@ -31,8 +31,8 @@ namespace MauiAppSample
             //     graphicsView.HeightRequest = _drawable.Picture.Height;
             // }
 
-            var fullPath = @"c:\DOWNLOADS\GitHub\Svg.Skia\externals\SVG\Tests\W3CTestSuite\svg";
-            //var fullPath = @"c:\Users\Administrator\Documents\GitHub\SVG\Tests\W3CTestSuite\svg\";
+            //var fullPath = @"c:\DOWNLOADS\GitHub\Svg.Skia\externals\SVG\Tests\W3CTestSuite\svg";
+            var fullPath = @"c:\Users\Administrator\Documents\GitHub\SVG\Tests\W3CTestSuite\svg\";
             var files = Directory.GetFiles(fullPath, "*.svg").Select(x =>
             {
                 return new Item()
@@ -50,27 +50,38 @@ namespace MauiAppSample
 
         private void CollectionView_SelectionChanged(object? sender, SelectionChangedEventArgs e)
         {
-            var item = e.CurrentSelection.FirstOrDefault() as Item;
-            if (item?.Path is { })
+
+            try
             {
-                var drawable = item.Drawable;
-                if (drawable is null)
+                var item = e.CurrentSelection.FirstOrDefault() as Item;
+                if (item?.Path is { })
                 {
-                    var stream = File.OpenRead(item.Path);
-                    if (stream is { })
+                    var drawable = item.Drawable;
+                    if (drawable is null)
                     {
-                        drawable = SvgDrawable.CreateFromStream(stream);
-                        item.Drawable = drawable;
+                        var stream = File.OpenRead(item.Path);
+                        if (stream is { })
+                        {
+                            drawable = SvgDrawable.CreateFromStream(stream);
+                            item.Drawable = drawable;
+                        }
+                    }
+
+                    if (drawable?.Picture is { })
+                    {
+                        graphicsView.Drawable = drawable;
+                        graphicsView.WidthRequest = drawable.Picture.Width;
+                        graphicsView.HeightRequest = drawable.Picture.Height;
+                        graphicsView.Invalidate();
                     }
                 }
-
-                if (drawable?.Picture is { })
-                {
-                    graphicsView.Drawable = drawable;
-                    graphicsView.WidthRequest = drawable.Picture.Width;
-                    graphicsView.HeightRequest = drawable.Picture.Height;
-                    graphicsView.Invalidate();
-                }
+            }
+            catch (Exception)
+            {
+                graphicsView.Drawable = null;
+                graphicsView.WidthRequest = 0;
+                graphicsView.HeightRequest = 0;
+                graphicsView.Invalidate();
             }
         }
 
