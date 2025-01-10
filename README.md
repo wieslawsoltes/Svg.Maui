@@ -1,3 +1,5 @@
+Archived since Microsoft.Maui.Graphics is no longer delevoped
+
 # Svg.Maui
 
 [![NuGet](https://badgen.net/nuget/v/Svg.Maui)](https://www.nuget.org/packages/Svg.Maui/)
